@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_delete"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".RecyclerListView">
+    <item android:id="@+id/menu_next"
         android:title="@string/action_next"
-
+        android:icon="@drawable/ic_action_next"
         app:showAsAction="ifRoom"
-        android:orderInCategory="10"/>
+        android:orderInCategory="10"
+        />
 </menu>
-    <!--android:icon="@drawable/ic_action_next"-->

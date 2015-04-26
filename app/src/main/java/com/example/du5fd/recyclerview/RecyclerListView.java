@@ -1,10 +1,11 @@
 package com.example.du5fd.recyclerview;
 
-import android.app.Activity;
 import android.support.v4.view.GestureDetectorCompat;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -16,11 +17,11 @@ import android.view.View;
 import java.util.ArrayList;
 
 
-public class RecyclerListView extends Activity implements RecyclerView.OnItemTouchListener, View.OnClickListener, ActionMode.Callback {
+public class RecyclerListView extends ActionBarActivity implements RecyclerView.OnItemTouchListener, View.OnClickListener, ActionMode.Callback {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<String> myDataset = new ArrayList<String>();
+    private ArrayList<String> myDataset = new ArrayList<>();
     private ActionMode mActionMode;
     private GestureDetectorCompat gestureDetector;
 
@@ -84,9 +85,9 @@ public class RecyclerListView extends Activity implements RecyclerView.OnItemTou
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        // Inflate a menu resource providing context menu items
-        MenuInflater inflater = mActionMode.getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_cab, menu);
+
         return true;
     }
 
@@ -97,7 +98,17 @@ public class RecyclerListView extends Activity implements RecyclerView.OnItemTou
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-       return false;
+        switch (item.getItemId()) {
+            case R.id.menu_next:
+                ArrayList<Integer> selectedItemPositions = mAdapter.getSelectedItems();
+                for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+                    Log.i("item", selectedItemPositions.get(i).toString());
+                }
+                mActionMode.finish();
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -114,15 +125,18 @@ public class RecyclerListView extends Activity implements RecyclerView.OnItemTou
             if (mActionMode != null) {
                 myToggleSelection(idx);
             }
-            //String data = mAdapter.getItem(idx);
-            // go to next view
+
+            Log.i("item", myDataset.get(idx).toString());
         }
     }
 
     private void myToggleSelection(int idx) {
         mAdapter.toggleSelection(idx);
-        String title = getString(R.string.selected_count, mAdapter.getSelectedItemCount());
+        String title = getString(R.string.selected_count) +  mAdapter.getSelectedItemCount();
         mActionMode.setTitle(title);
+        if(mAdapter.getSelectedItemCount()==0){
+            mActionMode.finish();
+        }
     }
 
     @Override
@@ -133,7 +147,6 @@ public class RecyclerListView extends Activity implements RecyclerView.OnItemTou
 
     @Override
     public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
     }
 
     private class RecyclerListViewOnGestureListener extends GestureDetector.SimpleOnGestureListener {

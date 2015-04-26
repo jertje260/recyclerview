@@ -21,7 +21,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder>  {
     public MyAdapter(ArrayList<String> myDataset){
         mDataset = myDataset;
         selectedItems = new SparseBooleanArray();
-        this.print("something");
     }
 
     @Override
@@ -29,15 +28,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder>  {
         //final String name = mDataset.get(position);
         holder.txtHeader.setText(mDataset.get(position));
         holder.txtFooter.setText("Footer: " + mDataset.get(position));
+        holder.itemView.setActivated(selectedItems.get(position, false));
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
-    }
-
-    public void print(String text){
-        Log.i("print", text);
     }
 
     public void toggleSelection(int pos){
@@ -61,7 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder>  {
 
     public ArrayList<Integer> getSelectedItems() {
         ArrayList<Integer> items =
-                new ArrayList<Integer>(selectedItems.size());
+                new ArrayList<>(selectedItems.size());
         for (int i = 0; i < selectedItems.size(); i++) {
             items.add(selectedItems.keyAt(i));
         }
@@ -79,7 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ItemViewHolder>  {
         }
     }
 
-    public MyAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         //create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         ItemViewHolder vh = new ItemViewHolder(v);
